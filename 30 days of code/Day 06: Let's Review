@@ -4,13 +4,13 @@ for i in range(int(input())):
     s=input(); 
     print(*["".join(s[::2]),"".join(s[1::2])])
 
-#can be
+#can also be:
 
 #for i in range(int(input())):
 #    s = input()
 #    print(s[::2], s[1::2])
 
-
+#or even:
 
 #def inputs():
 #    global S
