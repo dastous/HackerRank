@@ -1,4 +1,6 @@
-
+i = 4
+d = 4.0
+s = 'HackerRank '
 # Declare second integer, double, and String variables.
 a = 0
 b = 0.0
@@ -15,3 +17,4 @@ print(d+b)
 # Concatenate and print the String variables on a new line
 # The 's' variable above should be printed first.
 print(s+c)
+
