@@ -1,0 +1,62 @@
+#!/bin/python
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the minimumPasses function below.
+def check_possible(machine, worker, price, target, rounds):
+    if machine * worker >= target:
+        return True
+    rounds -= 1
+    curr_candy = machine * worker
+    while True:
+        remain = target - curr_candy
+        repeat = (remain + machine*worker - 1) // (machine * worker)
+        if repeat <= rounds:
+            return True
+        if curr_candy < price:
+            remain = price - curr_candy
+            repeat = (remain + machine * worker - 1) // (machine * worker)
+            rounds -= repeat
+            if rounds < 1:
+                return False
+            curr_candy += repeat * machine * worker
+        curr_candy -= price
+        if machine > worker:
+            worker += 1
+        else:
+            machine += 1
+
+def minimumPasses(m, w, p, n):
+    low, high = 1, 10**12
+    while low < high:
+        mid = (low + high) // 2
+        if check_possible(m, w, p, n, mid):
+            high = mid
+        else:
+            low = mid + 1
+    return high
+       
+    return min(ans, curr)
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    mwpn = raw_input().split()
+
+    m = int(mwpn[0])
+
+    w = int(mwpn[1])
+
+    p = int(mwpn[2])
+
+    n = int(mwpn[3])
+
+    result = minimumPasses(m, w, p, n)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
