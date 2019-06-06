@@ -1,0 +1,17 @@
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+def commonChild(s1, s2):
+    n = len(s1)
+    memo = [[0]*(n+1) for _ in range(n+1)]
+    for i in range(n):
+        for j in range(n):
+            if s1[i] == s2[j]:
+                memo[i+1][j+1] = memo[i][j] + 1
+            else:
+                memo[i+1][j+1] = max(memo[i][j+1], memo[i+1][j])
+    return memo[n][n]
+
+
+s1, s2 = input(), input()
+result = commonChild(s1, s2)
+print(result)
