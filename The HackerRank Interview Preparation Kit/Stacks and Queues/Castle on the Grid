@@ -1,0 +1,76 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from collections import deque
+
+
+# Complete the minimumMoves function below.
+def minimumMoves(grid, startX, startY, goalX, goalY):
+    conversion={'X':-1,'.':None}
+    m=len(grid)
+    n=len(grid[0])
+    G=[]
+    for i in range(m):
+        G.append([])
+        for ch in grid[i]:
+            G[i].append(conversion[ch])
+    #print(G)
+    Q=deque()
+    G[goalX][goalY]=0
+    Q.append((goalX,goalY))
+    def Task():
+        if G[x][y] is None:
+            G[x][y]=G[x0][y0]+1
+            if x==startX and y==startY:
+                return True
+            Q.append((x,y))
+            return False 
+    while Q:
+        temp=Q.popleft()
+        x0,y0=temp[0],temp[1]
+        y=y0
+        for x in range(x0+1,m):
+            if G[x][y]==-1: break
+            if Task(): return G[x][y]
+        for x in range(x0-1,-1,-1):
+            if G[x][y]==-1: break
+            if Task(): return G[x][y]    
+        x=x0
+        for y in range(y0+1,n):
+            if G[x][y]==-1: break
+            if Task(): return G[x][y]    
+        for y in range(y0-1,-1,-1):
+            if G[x][y]==-1: break
+            if Task(): return G[x][y]        
+    return -1
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input())
+
+    grid = []
+
+    for _ in range(n):
+        grid_item = input()
+        grid.append(grid_item)
+
+    startXStartY = input().split()
+
+    startX = int(startXStartY[0])
+
+    startY = int(startXStartY[1])
+
+    goalX = int(startXStartY[2])
+
+    goalY = int(startXStartY[3])
+
+    result = minimumMoves(grid, startX, startY, goalX, goalY)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
