@@ -1,0 +1,47 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the stepPerms function below.
+def stepPerms(n):
+    steps_dict = dict()    #a dictionary is used to implement a hashmap
+    return stepPerms_recurs(n, steps_dict)
+
+def stepPerms_recurs(n, dictionary):
+
+    #base case 1
+    if(n == 0):
+        dictionary[n] = 1
+
+    #base case 2
+    if(n == 1):
+        dictionary[n] = 1
+
+    #base case 3
+    if(n == 2):
+        dictionary[n] = 2
+
+    if(n in dictionary):
+        return dictionary[n]
+    
+    else:
+        dictionary[n] = stepPerms_recurs(n - 1, dictionary) + stepPerms_recurs(n - 2, dictionary) + stepPerms_recurs(n - 3, dictionary)
+        return dictionary[n]
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    s = int(input())
+
+    for s_itr in range(s):
+        n = int(input())
+
+        res = stepPerms(n)
+
+        fptr.write(str(res) + '\n')
+
+    fptr.close()
