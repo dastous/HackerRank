@@ -1,0 +1,115 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from copy import deepcopy
+
+SIZE = 10
+
+# Complete the crosswordPuzzle function below.
+from copy import deepcopy
+
+SIZE = 10
+
+
+def crossword_puzzle(crossword, words_, char):
+    fill_map = [[''] * SIZE for _ in range(SIZE)]
+    spaces = []
+
+    # first find the spaces
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if crossword[y][x] == char or fill_map[y][x] == 'vh':
+                continue
+            if (
+                x < (SIZE - 1)
+                and ('h' not in fill_map[y][x])
+                and crossword[y][x + 1] == '-'
+            ):
+                i = 0
+                space = []
+                while (x + i) < SIZE:
+                    if crossword[y][x + i] == '-':
+                        fill_map[y][x + i] += 'h'
+                        space.append((y, x + i))
+                        i += 1
+                    else:
+                        break
+                spaces.append(space)
+
+            if (
+                y < (SIZE - 1)
+                and ('v' not in fill_map[y][x])
+                and crossword[y + 1][x] == '-'
+            ):
+                i = 0
+                space = []
+                while (y + i) < SIZE:
+                    if crossword[y + i][x] == '-':
+                        fill_map[y + i][x] += 'v'
+                        space.append((y + i, x))
+                        i += 1
+                    else:
+                        break
+                spaces.append(space)
+
+    def place_word(w_map, words, spaces):
+        if len(words) == 0:
+            return True, w_map
+
+        s = spaces[0]
+        for w in words:
+            if len(w) != len(s):
+                continue
+            done = True
+            rollback = []
+            for i, (y, x) in enumerate(s):
+                if w_map[y][x] != char and w_map[y][x] != w[i]:
+                    done = False
+                    break
+                if w_map[y][x] == char:
+                    w_map[y][x] = w[i]
+                    rollback.append((y, x))
+            if done:
+                new_words = deepcopy(words)
+                new_words.remove(w)
+                success, result_map = place_word(deepcopy(w_map), new_words, spaces[1:])
+                if success:
+                    return success, result_map
+                else:
+                    for y, x in rollback:
+                        w_map[y][x] = char
+
+        return False, []
+
+    word_map = [[char] * SIZE for _ in range(SIZE)]
+    success, result = place_word(word_map, words_, spaces)
+    if success:
+        return '\n'.join(''.join(x) for x in result)
+    else:
+        raise RuntimeError('not good')
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    crossword = []
+
+    for _ in range(10):
+        crossword_item = input()
+        crossword.append(list(crossword_item))
+    cs = set(crossword[0])
+    cs.remove('-')
+    char = list(cs)[0]
+
+    words = input().split(';')
+
+    result = crossword_puzzle(crossword, words, char)
+
+    fptr.write(result)
+    fptr.write('\n')
+
+    fptr.close()
