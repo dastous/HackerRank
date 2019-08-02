@@ -1,0 +1,39 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the climbingLeaderboard function below.
+def climbingLeaderboard(scores, alice):
+    s, o = sorted(list(set(scores))), []
+    while alice:
+        if not s:
+            o += [1]
+            alice.pop(0)
+        elif alice[0] <= s[0]:
+            o += [len(s) + (alice[0] < s[0])]
+            alice.pop(0)
+        else:
+            s.pop(0)
+    return(o)
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    scores_count = int(input())
+
+    scores = list(map(int, input().rstrip().split()))
+
+    alice_count = int(input())
+
+    alice = list(map(int, input().rstrip().split()))
+
+    result = climbingLeaderboard(scores, alice)
+
+    fptr.write('\n'.join(map(str, result)))
+    fptr.write('\n')
+
+    fptr.close()
